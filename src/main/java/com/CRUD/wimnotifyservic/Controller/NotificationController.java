@@ -2,6 +2,7 @@ package com.CRUD.wimnotifyservic.Controller;
 
 import java.util.Collection;
 
+import com.CRUD.wimnotifyservic.Config.Kafka.JsonKafkaProducer;
 import com.CRUD.wimnotifyservic.Config.Kafka.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,13 @@ public class NotificationController {
     private NotificationService notificationservice;
     @Autowired
     private KafkaProducer kafkaProducer;
+    @Autowired
+    private JsonKafkaProducer jsonKafkaProducer;
+    @PostMapping(value = "publish")
+    public ResponseEntity<String> publishJson(@RequestBody Notification notification){
+        jsonKafkaProducer.sendMessage(notification);
+        return ResponseEntity.ok("Json message sent to the kafka topic");
+    }
     @GetMapping(value = "publish")
     public ResponseEntity<String> publish(@RequestParam("message") String message){
     kafkaProducer.sentMessage(message);
