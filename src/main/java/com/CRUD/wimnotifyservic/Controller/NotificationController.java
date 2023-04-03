@@ -40,6 +40,8 @@ public class NotificationController {
     public Notification add_notification(@RequestBody Notification notification) {
 
         notificationservice.save(notification);
+        publishJson(notification);
+
         System.out.println("notification add ");
         return notification;
 
